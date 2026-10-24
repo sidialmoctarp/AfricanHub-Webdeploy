@@ -7,11 +7,11 @@ let simulationLayerGroup;
 let layerControl;
 let legendControl;
 
-// No API keys live in the front-end. Weather is fetched through a Netlify Function
-// (netlify/functions/weather.js) that holds the OpenWeather key as an environment variable.
-// When the site is served without Netlify (e.g. python -m http.server) the call fails and weather is skipped.
+const OPENWEATHER_API_KEY = '79e929462cb11758235cff37ac18493a';
+const cartoApiKey = 'cb1_3hoy_1_47b9b0ed893888ee453fd06b';
+
 function fetchWeatherByCoordinates(lat, lon) {
-  const url = `/.netlify/functions/weather?lat=${encodeURIComponent(lat)}&lon=${encodeURIComponent(lon)}`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${OPENWEATHER_API_KEY}`;
   return fetch(url)
     .then(async res => {
       const data = await res.json();
@@ -25,13 +25,13 @@ function fetchWeatherByCoordinates(lat, lon) {
 }
 
 const basemaps = {
-  "Dark Canvas (CARTO)": L.tileLayer(`https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png`, {
+  "Dark Canvas (CARTO)": L.tileLayer(`https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png?key=${cartoApiKey}`, {
     attribution: '&copy; OpenStreetMap & CARTO', maxZoom: 20
   }),
   "ESRI Satellite World": L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
     attribution: 'Tiles &copy; Esri &mdash; USDA, USGS, GeoEye', maxZoom: 18
   }),
-  "Light Canvas (CARTO)": L.tileLayer(`https://basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png`, {
+  "Light Canvas (CARTO)": L.tileLayer(`https://basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png?key=${cartoApiKey}`, {
     attribution: '&copy; OpenStreetMap & CARTO', maxZoom: 20
   }),
   "Streets (OSM)": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
