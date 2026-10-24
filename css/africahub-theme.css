@@ -1,0 +1,160 @@
+/* ==========================================================================
+   AfricaHub theme for the app (app.html)
+   Visual-only override layer: re-skins the existing UI with the palette and
+   typography of the login / landing page. No markup, behaviour or content is
+   changed. Loaded last so it wins over style.css / components.css.
+   Dark is the default; the existing theme toggle switches to a light variant.
+   ========================================================================== */
+
+:root {
+  /* Thermal accents shared with the landing page */
+  --ah-blue: #1d4ed8;
+  --ah-cyan: #22d3ee;
+  --ah-orange: #f97316;
+  --ah-red: #ef4444;
+  --ah-heat: linear-gradient(90deg, #1d4ed8 0%, #22d3ee 28%, #facc15 55%, #f97316 78%, #ef4444 100%);
+  --ah-cta: linear-gradient(135deg, #1d4ed8, #f97316 120%);
+  --font-head: 'Outfit', 'Inter', sans-serif;
+}
+
+/* ---- Light variant (toggle) ---- */
+:root {
+  --bg-primary: #eef2fb;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #e6ecf8;
+  --text-primary: #0b1330;
+  --text-secondary: #3d4a6b;
+  --text-muted: #62708f;
+  --border-color: #d7def0;
+  --primary-color: #1d4ed8;
+  --primary-hover: #1e40af;
+  --accent-color: #ea580c;
+  --accent-hover: #c2410c;
+  --tint-primary: rgba(29, 78, 216, 0.1);
+  --surface-sunken: #e6ecf8;
+  --border-light: #c3cde6;
+}
+
+/* ---- Dark variant (default, matches the landing page) ---- */
+.dark-theme {
+  --bg-primary: #070b16;
+  --bg-secondary: #0c1222;
+  --bg-tertiary: #141c33;
+  --text-primary: #e8edf7;
+  --text-secondary: #c3cde3;
+  --text-muted: #9aa7c2;
+  --border-color: rgba(255, 255, 255, 0.12);
+  --primary-color: #22d3ee;
+  --primary-hover: #67e8f9;
+  --accent-color: #f97316;
+  --accent-hover: #fb923c;
+  --tint-primary: rgba(34, 211, 238, 0.12);
+  --surface-sunken: #070b16;
+  --surface-hover: rgba(255, 255, 255, 0.06);
+  --scrim: rgba(3, 6, 14, 0.8);
+  --border-light: rgba(255, 255, 255, 0.22);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.55);
+}
+
+/* ---- Typography ---- */
+h1, h2, h3, h4, .brand-title, .kpi-value, .results-title-group h2 {
+  font-family: var(--font-head);
+  letter-spacing: -0.01em;
+}
+
+/* ---- Brand block ---- */
+.brand-icon {
+  background: var(--ah-heat);
+  box-shadow: 0 0 16px rgba(249, 115, 22, 0.45);
+  position: relative;
+  font-size: 0;                         /* hide the emoji, show the AfricaHub mark */
+}
+.brand-icon::after {
+  content: ""; position: absolute; inset: 8px; border-radius: 50%;
+  border: 2px solid rgba(7, 11, 22, 0.75);
+}
+.brand-title { color: var(--text-primary); }
+.brand-version { color: var(--ah-orange); background: rgba(249, 115, 22, 0.14); }
+
+/* ---- Shell: sidebar + topbar ---- */
+.sidebar { background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%); }
+.dark-theme .sidebar { box-shadow: 12px 0 40px rgba(0, 0, 0, 0.35); }
+.top-hud-bar { position: relative; backdrop-filter: blur(14px); }
+.dark-theme .top-hud-bar { background: rgba(12, 18, 34, 0.85); }
+.top-hud-bar::after {                    /* thermal strip, like the landing page */
+  content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--ah-heat); opacity: 0.85;
+}
+.sidebar-intro h2 {
+  background: var(--ah-heat); -webkit-background-clip: text; background-clip: text; color: transparent; font-size: 1.25rem;
+}
+
+/* ---- Sidebar cards ("glass") ---- */
+.form-group { border-radius: 14px; transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease; }
+.dark-theme .form-group { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(8px); }
+.form-group:hover { border-color: rgba(249, 115, 22, 0.55); transform: translateY(-2px); }
+.step-badge { background: var(--ah-cta); border-radius: 50%; width: 22px; height: 22px; box-shadow: 0 0 10px rgba(249, 115, 22, 0.4); }
+.form-group-title { letter-spacing: 0.08em; }
+
+/* ---- Inputs ---- */
+input[type="text"], input[type="date"], input[type="number"], select { border-radius: 10px; }
+.dark-theme input[type="text"], .dark-theme input[type="date"], .dark-theme input[type="number"], .dark-theme select {
+  background: rgba(0, 0, 0, 0.3); color-scheme: dark;
+}
+input:focus, select:focus { outline: none; border-color: var(--ah-cyan); box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.18); }
+input[type="range"], input[type="radio"], input[type="checkbox"] { accent-color: var(--ah-orange); }
+
+/* ---- Buttons ---- */
+.btn { border-radius: 12px; font-weight: 600; }
+.btn-primary, .dark-theme .btn-primary, .btn-glow, .dark-theme .btn-glow {
+  background: var(--ah-cta); color: #fff; border-color: transparent; box-shadow: 0 8px 24px rgba(249, 115, 22, 0.25);
+}
+.btn-primary:hover:not(:disabled), .btn-glow:hover:not(:disabled) {
+  background: var(--ah-cta); transform: translateY(-2px); box-shadow: 0 12px 30px rgba(249, 115, 22, 0.4);
+}
+.btn-glow { border-radius: 14px; }
+.btn-secondary:hover:not(:disabled) { border-color: var(--ah-cyan); background: var(--surface-hover); }
+.btn-cyan { border-color: var(--ah-cyan); color: var(--ah-cyan); background: rgba(34, 211, 238, 0.1); }
+.btn-cyan:hover:not(:disabled), .dark-theme .btn-cyan:hover:not(:disabled) { background: var(--ah-cyan); color: #04101f; }
+:root:not(.dark-theme) .btn-cyan { color: var(--ah-blue); border-color: var(--ah-blue); background: rgba(29, 78, 216, 0.08); }
+:root:not(.dark-theme) .btn-cyan:hover:not(:disabled) { background: var(--ah-blue); color: #fff; }
+.icon-btn { border-radius: 10px; }
+.icon-btn:hover { border-color: var(--ah-cyan); }
+.floating-results-btn, .dark-theme .floating-results-btn { background: var(--ah-cta); color: #fff; border-color: transparent; }
+.btn-ai-tree { background: var(--ah-cta) !important; color: #fff; border-radius: 12px; }
+
+/* ---- Telemetry pills ---- */
+.dark-theme .telemetry-pill { background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(6px); }
+.dark-theme .telemetry-pill.live { color: #4ade80; }
+
+/* ---- Results window, KPIs, tables ---- */
+.results-window { border-radius: 18px; border: 1px solid var(--border-color); }
+.dark-theme .results-window { background: rgba(12, 18, 34, 0.94); backdrop-filter: blur(18px); box-shadow: var(--shadow-lg); }
+.results-window-header { background: linear-gradient(90deg, rgba(29, 78, 216, 0.28), rgba(249, 115, 22, 0.16)); border-bottom: 1px solid var(--border-color); }
+.dark-theme .kpi-card, .dark-theme .chart-card, .dark-theme .data-table-card, .dark-theme .ai-tree-card { background: rgba(255, 255, 255, 0.05); }
+.kpi-card, .chart-card, .data-table-card, .ai-tree-card { border-radius: 14px; }
+.kpi-card { transition: transform 0.25s ease, border-color 0.25s ease; }
+.kpi-card:hover { transform: translateY(-4px); border-color: rgba(249, 115, 22, 0.6); }
+.kpi-card::before { background: var(--ah-heat) !important; }
+.kpi-value { background: var(--ah-heat); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.kpi-value.hot { background: linear-gradient(90deg, #f97316, #ef4444); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.kpi-value.anomaly { background: linear-gradient(90deg, #facc15, #f97316); -webkit-background-clip: text; background-clip: text; color: transparent; }
+th { letter-spacing: 0.06em; }
+tbody tr:hover { background: var(--surface-hover); }
+.btn-locate { border-color: var(--ah-cyan); color: var(--ah-cyan); }
+.strategy-box { border-left: 3px solid var(--ah-orange); border-radius: 12px; }
+.strategy-box h4, .ai-tree-header .accent { color: var(--ah-orange); }
+
+/* ---- Pipeline HUD, modal ---- */
+.dark-theme .loading-overlay { background: rgba(3, 6, 14, 0.82); backdrop-filter: blur(8px); }
+.pipeline-hud-card, .modal-content { border-radius: 22px; }
+.dark-theme .pipeline-hud-card, .dark-theme .modal-content { background: #0d1426; border: 1px solid var(--border-color); box-shadow: var(--shadow-lg); }
+.progress-fill { background: var(--ah-heat) !important; }
+.pipeline-spinner { border-color: rgba(255, 255, 255, 0.15) !important; border-top-color: var(--ah-orange) !important; border-right-color: var(--ah-cyan) !important; }
+
+/* ---- Map chrome ---- */
+.map-coord-hud, .legend-hud, .leaflet-control-layers, .leaflet-bar a { border-radius: 10px; }
+.dark-theme .map-coord-hud, .dark-theme .legend-hud { background: rgba(12, 18, 34, 0.85); backdrop-filter: blur(10px); border: 1px solid var(--border-color); }
+
+/* ---- Scrollbars ---- */
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #1d4ed8, #f97316); border-radius: 4px; }

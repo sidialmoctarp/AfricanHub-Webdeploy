@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UHI Results</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+  <div class="app-container" style="flex-direction: column;">
+    
+    <!-- Results Header -->
+    <header class="results-header">
+      <div>
+        <a href="index.html" class="btn btn-secondary" style="display: inline-block; width: auto; margin-bottom: 0.5rem;">← Back to Dashboard</a>
+        <h2>Statistical Analysis Results</h2>
+        <p id="scene-info-text">Scene: 2025-08-14 | LC09 | Area: Loading...</p>
+      </div>
+      <div style="display: flex; gap: 1rem;">
+        <button onclick="exportCsv()" class="btn btn-secondary">⬇️ CSV Data</button>
+        <button onclick="exportDocx()" class="btn btn-primary">📄 DOCX Report</button>
+        <button onclick="exportGeotiff()" class="btn btn-primary">🗺️ Download GeoTIFF</button>
+      </div>
+    </header>
+
+    <div class="results-content">
+      
+      <!-- KPI Cards -->
+      <div class="kpi-grid">
+        <div class="card kpi-card">
+          <span style="color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase;">Mean LST</span>
+          <span class="kpi-value">38.4 °C</span>
+        </div>
+        <div class="card kpi-card">
+          <span style="color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase;">Max LST</span>
+          <span class="kpi-value hot">47.2 °C</span>
+        </div>
+        <div class="card kpi-card">
+          <span style="color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase;">UHI Intensity</span>
+          <span class="kpi-value hot">+6.1 °C</span>
+        </div>
+        <div class="card kpi-card">
+          <span style="color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase;">Hotspot Area</span>
+          <span class="kpi-value">18.3 km² <span style="font-size: 1rem; color: var(--text-muted);">(12.9%)</span></span>
+        </div>
+      </div>
+
+      <!-- Charts & Map Row -->
+      <div class="charts-row">
+        <!-- Results Map -->
+        <div class="card" style="padding: 0; overflow: hidden;">
+          <div id="results-map" class="results-map"></div>
+        </div>
+
+        <!-- Charts Grid -->
+        <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem; max-height: 600px; overflow-y: auto; padding-right: 10px;">
+          <div class="card chart-container">
+            <canvas id="lstHistogram"></canvas>
+          </div>
+          <div class="card chart-container">
+            <canvas id="uhiHistogram"></canvas>
+          </div>
+          <div class="card chart-container">
+            <canvas id="ndbiHistogram"></canvas>
+          </div>
+          <div class="card chart-container">
+            <canvas id="ndviHistogram"></canvas>
+          </div>
+          <div class="card chart-container">
+            <canvas id="urbanVsRural"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data Table -->
+      <div class="data-table-section">
+        <div class="card">
+          <h3>Hotspot Inventory (μ + 2σ)</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Cluster ID</th>
+                <th>Area (km²)</th>
+                <th>Peak Temp (°C)</th>
+                <th>Coordinates (Lat, Lon)</th>
+              </tr>
+            </thead>
+            <tbody id="hotspot-table-body">
+              <!-- Populated by results.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- AI Tree Recommendations Card -->
+      <div class="ai-tree-card">
+        <div class="ai-icon-wrapper">
+          💡
+        </div>
+        <h3>AI Tree Recommendations</h3>
+        <p>Get AI-powered recommendations for native tree species to reduce urban heat in <span id="ai-area-name" style="font-weight: bold;">your selected area</span>. Includes cooling effect analysis, planting zones, and district action plans.</p>
+        
+        <div class="ai-checklist">
+          <h4>What you'll see:</h4>
+          <ul>
+            <li><span>✓</span> 7 native species with cooling data</li>
+            <li><span>✓</span> Radar & bar charts comparison</li>
+            <li><span>✓</span> District planting action plan</li>
+            <li><span>✓</span> AI-generated greening strategy</li>
+          </ul>
+        </div>
+        
+        <button class="btn-ai-tree" id="btn-open-trees">
+          🌲 Open Tree Recommendations
+        </button>
+      </div>
+
+      <!-- AI Tree Results Container (Hidden until clicked) -->
+      <div class="tree-results-section" id="tree-results-container">
+        <div class="card">
+          <h3 style="color: #10B981; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Recommended Native Species</h3>
+          <p style="color: var(--text-muted); margin-bottom: 1rem;">Based on local climate, soil conditions, and UHI intensity in the selected region.</p>
+          <table>
+            <thead>
+              <tr>
+                <th>Species Name</th>
+                <th>Common Name</th>
+                <th>Cooling Potential</th>
+                <th>Drought Tolerance</th>
+                <th>Growth Rate</th>
+              </tr>
+            </thead>
+            <tbody id="tree-table-body">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+          
+          <h3 style="color: #10B981; margin-top: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Greening Strategy</h3>
+          <p id="tree-strategy-text" style="line-height: 1.6; color: var(--text-muted);"></p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DOCX Preview Modal -->
+  <div id="docx-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 style="margin: 0;">Report Preview</h3>
+        <button class="btn btn-secondary" style="width: auto; padding: 0.5rem;" onclick="closeDocxModal()">✖</button>
+      </div>
+      <div class="modal-body" id="docx-preview-content">
+        <!-- Content populated by JS -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" style="width: auto;" onclick="closeDocxModal()">Cancel</button>
+        <button class="btn btn-primary" style="width: auto;" onclick="downloadDocx()">⬇️ Download DOCX</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Turf.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+  <!-- SheetJS -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <!-- docx.js -->
+  <script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
+  <!-- FileSaver.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <!-- html2canvas -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <!-- Custom JS -->
+  <script src="js/map.js"></script>
+  <script src="js/results.js"></script>
+  <script src="js/export.js"></script>
+</body>
+</html>

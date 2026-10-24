@@ -1,0 +1,170 @@
+/* SaaS Dark Theme & Professional GIS Styling for Streamlit */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* Global Font & Theme */
+html, body, [class*="css"] {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+/* Hide Default Streamlit Chrome */
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+header {visibility: hidden;}
+
+/* Background & Containers */
+.stApp {
+    background: radial-gradient(circle at 10% 10%, #0d1b22 0%, #07090d 100%) !important;
+    color: #F8FAFC !important;
+}
+
+/* Sidebar Styling */
+section[data-testid="stSidebar"] {
+    background-color: rgba(13, 20, 30, 0.95) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(20px) !important;
+}
+
+/* Custom Header Banner */
+.custom-header {
+    background: linear-gradient(135deg, rgba(13, 148, 136, 0.15) 0%, rgba(2, 132, 199, 0.1) 100%);
+    border: 1px solid rgba(0, 240, 255, 0.25);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+
+.custom-header-title {
+    font-size: 1.45rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #ffffff 0%, #a5f3fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+}
+
+.custom-header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    color: #34d399;
+}
+
+/* Metric Cards */
+.metric-card {
+    background: rgba(15, 23, 33, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 1rem;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.metric-card:hover {
+    border-color: rgba(0, 240, 255, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 3px; height: 100%;
+    background: #0d9488;
+}
+
+.metric-card.heat::before {
+    background: #ef4444;
+}
+
+.metric-card.anomaly::before {
+    background: #f59e0b;
+}
+
+.metric-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #94A3B8;
+    font-weight: 600;
+}
+
+.metric-value {
+    font-size: 1.85rem;
+    font-weight: 800;
+    color: #F8FAFC;
+    margin: 4px 0;
+}
+
+.metric-value.hot {
+    color: #f87171;
+    text-shadow: 0 0 12px rgba(239, 68, 68, 0.35);
+}
+
+.metric-value.anomaly {
+    color: #fbbf24;
+    text-shadow: 0 0 12px rgba(245, 158, 11, 0.3);
+}
+
+.metric-sub {
+    font-size: 0.72rem;
+    color: #64748B;
+}
+
+/* Tabs Styling */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 8px;
+    background-color: rgba(10, 16, 24, 0.6);
+    padding: 6px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.stTabs [data-baseweb="tab"] {
+    border-radius: 6px !important;
+    color: #94A3B8 !important;
+    padding: 8px 16px !important;
+    font-weight: 600 !important;
+    font-size: 0.88rem !important;
+    border: none !important;
+}
+
+.stTabs [aria-selected="true"] {
+    background: linear-gradient(135deg, rgba(13, 148, 136, 0.25) 0%, rgba(2, 132, 199, 0.2) 100%) !important;
+    color: #00F0FF !important;
+    border: 1px solid rgba(0, 240, 255, 0.4) !important;
+}
+
+/* Button & Action Styling */
+.stButton>button {
+    background: linear-gradient(135deg, #0d9488 0%, #0284c7 100%) !important;
+    color: #FFFFFF !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 14px rgba(13, 148, 136, 0.35) !important;
+    transition: all 0.2s ease !important;
+}
+
+.stButton>button:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 20px rgba(0, 240, 255, 0.5) !important;
+}
+
+/* Sliders */
+.stSlider [data-baseweb="slider"] {
+    accent-color: #00F0FF !important;
+}

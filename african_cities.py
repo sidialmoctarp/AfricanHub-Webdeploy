@@ -1,0 +1,340 @@
+"""
+GADM-Aligned Registry of all 54 African Sovereign Capital & Metropolitan Cities
+Source & Boundary Alignment: GADM (https://gadm.org/data.html)
+"""
+
+AFRICAN_CITIES = {
+    # --- NORTH AFRICA ---
+    "Algiers (Algeria)": {
+        "country": "Algeria", "iso3": "DZA", "city": "Algiers",
+        "lat": 36.7538, "lon": 3.0588, "region": "North Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_DZA_1.json",
+        "bbox": [2.85, 36.65, 3.25, 36.85]
+    },
+    "Cairo (Egypt)": {
+        "country": "Egypt", "iso3": "EGY", "city": "Cairo",
+        "lat": 30.0444, "lon": 31.2357, "region": "North Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_EGY_1.json",
+        "bbox": [31.10, 29.90, 31.45, 30.20]
+    },
+    "Tripoli (Libya)": {
+        "country": "Libya", "iso3": "LBY", "city": "Tripoli",
+        "lat": 32.8872, "lon": 13.1913, "region": "North Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_LBY_1.json",
+        "bbox": [13.05, 32.78, 13.35, 32.95]
+    },
+    "Rabat / Casablanca (Morocco)": {
+        "country": "Morocco", "iso3": "MAR", "city": "Casablanca",
+        "lat": 33.5731, "lon": -7.5898, "region": "North Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_MAR_1.json",
+        "bbox": [-7.75, 33.48, -7.45, 33.65]
+    },
+    "Tunis (Tunisia)": {
+        "country": "Tunisia", "iso3": "TUN", "city": "Tunis",
+        "lat": 36.8065, "lon": 10.1815, "region": "North Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_TUN_1.json",
+        "bbox": [10.05, 36.72, 10.32, 36.90]
+    },
+    "Khartoum (Sudan)": {
+        "country": "Sudan", "iso3": "SDN", "city": "Khartoum",
+        "lat": 15.5007, "lon": 32.5599, "region": "North Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_SDN_1.json",
+        "bbox": [32.40, 15.40, 32.70, 15.65]
+    },
+
+    # --- WEST AFRICA ---
+    "Porto-Novo / Cotonou (Benin)": {
+        "country": "Benin", "iso3": "BEN", "city": "Cotonou",
+        "lat": 6.3703, "lon": 2.4183, "region": "West Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_BEN_1.json",
+        "bbox": [2.32, 6.32, 2.50, 6.42]
+    },
+    "Ouagadougou (Burkina Faso)": {
+        "country": "Burkina Faso", "iso3": "BFA", "city": "Ouagadougou",
+        "lat": 12.3714, "lon": -1.5197, "region": "West Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_BFA_1.json",
+        "bbox": [-1.62, 12.28, -1.40, 12.45]
+    },
+    "Praia (Cabo Verde)": {
+        "country": "Cabo Verde", "iso3": "CPV", "city": "Praia",
+        "lat": 14.9330, "lon": -23.5133, "region": "West Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_CPV_1.json",
+        "bbox": [-23.55, 14.90, -23.48, 14.96]
+    },
+    "Abidjan (Ivory Coast)": {
+        "country": "Ivory Coast", "iso3": "CIV", "city": "Abidjan",
+        "lat": 5.3600, "lon": -4.0083, "region": "West Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_CIV_1.json",
+        "bbox": [-4.15, 5.25, -3.85, 5.45]
+    },
+    "Banjul (The Gambia)": {
+        "country": "The Gambia", "iso3": "GMB", "city": "Banjul",
+        "lat": 13.4549, "lon": -16.5790, "region": "West Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_GMB_1.json",
+        "bbox": [-16.65, 13.40, -16.52, 13.50]
+    },
+    "Accra (Ghana)": {
+        "country": "Ghana", "iso3": "GHA", "city": "Accra",
+        "lat": 5.6037, "lon": -0.1870, "region": "West Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_GHA_1.json",
+        "bbox": [-0.32, 5.50, -0.08, 5.70]
+    },
+    "Conakry (Guinea)": {
+        "country": "Guinea", "iso3": "GIN", "city": "Conakry",
+        "lat": 9.6412, "lon": -13.5784, "region": "West Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_GIN_1.json",
+        "bbox": [-13.72, 9.50, -13.45, 9.75]
+    },
+    "Bissau (Guinea-Bissau)": {
+        "country": "Guinea-Bissau", "iso3": "GNB", "city": "Bissau",
+        "lat": 11.8632, "lon": -15.5984, "region": "West Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_GNB_1.json",
+        "bbox": [-15.65, 11.82, -15.55, 11.90]
+    },
+    "Monrovia (Liberia)": {
+        "country": "Liberia", "iso3": "LBR", "city": "Monrovia",
+        "lat": 6.3005, "lon": -10.7969, "region": "West Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_LBR_1.json",
+        "bbox": [-10.85, 6.25, -10.72, 6.35]
+    },
+    "Bamako (Mali)": {
+        "country": "Mali", "iso3": "MLI", "city": "Bamako",
+        "lat": 12.6392, "lon": -8.0029, "region": "West Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_MLI_1.json",
+        "bbox": [-8.12, 12.55, -7.90, 12.72]
+    },
+    "Nouakchott (Mauritania)": {
+        "country": "Mauritania", "iso3": "MRT", "city": "Nouakchott",
+        "lat": 18.0735, "lon": -15.9582, "region": "West Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_MRT_1.json",
+        "bbox": [-16.05, 18.00, -15.85, 18.15]
+    },
+    "Niamey (Niger)": {
+        "country": "Niger", "iso3": "NER", "city": "Niamey",
+        "lat": 13.5116, "lon": 2.1254, "region": "West Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_NER_1.json",
+        "bbox": [2.05, 13.45, 2.20, 13.58]
+    },
+    "Abuja / Lagos (Nigeria)": {
+        "country": "Nigeria", "iso3": "NGA", "city": "Lagos",
+        "lat": 6.5244, "lon": 3.3792, "region": "West Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_NGA_1.json",
+        "bbox": [3.20, 6.40, 3.55, 6.65]
+    },
+    "Dakar (Senegal)": {
+        "country": "Senegal", "iso3": "SEN", "city": "Dakar",
+        "lat": 14.7167, "lon": -17.4677, "region": "West Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_SEN_1.json",
+        "bbox": [-17.52, 14.65, -17.40, 14.78]
+    },
+    "Freetown (Sierra Leone)": {
+        "country": "Sierra Leone", "iso3": "SLE", "city": "Freetown",
+        "lat": 8.4840, "lon": -13.2299, "region": "West Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_SLE_1.json",
+        "bbox": [-13.30, 8.42, -13.15, 8.52]
+    },
+    "Lomé (Togo)": {
+        "country": "Togo", "iso3": "TGO", "city": "Lomé",
+        "lat": 6.1375, "lon": 1.2123, "region": "West Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_TGO_1.json",
+        "bbox": [1.15, 6.10, 1.28, 6.20]
+    },
+
+    # --- EAST AFRICA ---
+    "Bujumbura (Burundi)": {
+        "country": "Burundi", "iso3": "BDI", "city": "Bujumbura",
+        "lat": -3.3822, "lon": 29.3644, "region": "East Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_BDI_1.json",
+        "bbox": [29.32, -3.42, 29.42, -3.32]
+    },
+    "Moroni (Comoros)": {
+        "country": "Comoros", "iso3": "COM", "city": "Moroni",
+        "lat": -11.7172, "lon": 43.2473, "region": "East Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_COM_1.json",
+        "bbox": [43.22, -11.74, 43.28, -11.68]
+    },
+    "Djibouti City (Djibouti)": {
+        "country": "Djibouti", "iso3": "DJI", "city": "Djibouti City",
+        "lat": 11.5721, "lon": 43.1456, "region": "East Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_DJI_1.json",
+        "bbox": [43.10, 11.52, 43.20, 11.62]
+    },
+    "Asmara (Eritrea)": {
+        "country": "Eritrea", "iso3": "ERI", "city": "Asmara",
+        "lat": 15.3229, "lon": 38.9251, "region": "East Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_ERI_1.json",
+        "bbox": [38.88, 15.28, 38.98, 15.36]
+    },
+    "Addis Ababa (Ethiopia)": {
+        "country": "Ethiopia", "iso3": "ETH", "city": "Addis Ababa",
+        "lat": 9.0300, "lon": 38.7400, "region": "East Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_ETH_1.json",
+        "bbox": [38.65, 8.92, 38.85, 9.12]
+    },
+    "Nairobi (Kenya)": {
+        "country": "Kenya", "iso3": "KEN", "city": "Nairobi",
+        "lat": -1.2921, "lon": 36.8219, "region": "East Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_KEN_1.json",
+        "bbox": [36.70, -1.40, 36.95, -1.20]
+    },
+    "Antananarivo (Madagascar)": {
+        "country": "Madagascar", "iso3": "MDG", "city": "Antananarivo",
+        "lat": -18.8792, "lon": 47.5079, "region": "East Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_MDG_1.json",
+        "bbox": [47.45, -18.95, 47.58, -18.80]
+    },
+    "Lilongwe (Malawi)": {
+        "country": "Malawi", "iso3": "MWI", "city": "Lilongwe",
+        "lat": -13.9626, "lon": 33.7741, "region": "East Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_MWI_1.json",
+        "bbox": [33.72, -14.02, 33.85, -13.90]
+    },
+    "Port Louis (Mauritius)": {
+        "country": "Mauritius", "iso3": "MUS", "city": "Port Louis",
+        "lat": -20.1609, "lon": 57.5012, "region": "East Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_MUS_1.json",
+        "bbox": [57.46, -20.20, 57.54, -20.12]
+    },
+    "Maputo (Mozambique)": {
+        "country": "Mozambique", "iso3": "MOZ", "city": "Maputo",
+        "lat": -25.9692, "lon": 32.5732, "region": "East Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_MOZ_1.json",
+        "bbox": [32.50, -26.02, 32.65, -25.90]
+    },
+    "Kigali (Rwanda)": {
+        "country": "Rwanda", "iso3": "RWA", "city": "Kigali",
+        "lat": -1.9706, "lon": 30.1044, "region": "East Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_RWA_1.json",
+        "bbox": [30.02, -2.04, 30.18, -1.90]
+    },
+    "Victoria (Seychelles)": {
+        "country": "Seychelles", "iso3": "SYC", "city": "Victoria",
+        "lat": -4.6191, "lon": 55.4513, "region": "East Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_SYC_1.json",
+        "bbox": [55.42, -4.65, 55.48, -4.59]
+    },
+    "Mogadishu (Somalia)": {
+        "country": "Somalia", "iso3": "SOM", "city": "Mogadishu",
+        "lat": 2.0469, "lon": 45.3182, "region": "East Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_SOM_1.json",
+        "bbox": [45.25, 2.00, 45.40, 2.10]
+    },
+    "Juba (South Sudan)": {
+        "country": "South Sudan", "iso3": "SSD", "city": "Juba",
+        "lat": 4.8594, "lon": 31.5713, "region": "East Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_SSD_1.json",
+        "bbox": [31.50, 4.80, 31.65, 4.92]
+    },
+    "Dar es Salaam (Tanzania)": {
+        "country": "Tanzania", "iso3": "TZA", "city": "Dar es Salaam",
+        "lat": -6.7924, "lon": 39.2083, "region": "East Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_TZA_1.json",
+        "bbox": [39.10, -6.90, 39.32, -6.70]
+    },
+    "Kampala (Uganda)": {
+        "country": "Uganda", "iso3": "UGA", "city": "Kampala",
+        "lat": 0.3476, "lon": 32.5825, "region": "East Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_UGA_1.json",
+        "bbox": [32.52, 0.28, 32.65, 0.42]
+    },
+    "Lusaka (Zambia)": {
+        "country": "Zambia", "iso3": "ZMB", "city": "Lusaka",
+        "lat": -15.3875, "lon": 28.3228, "region": "East Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_ZMB_1.json",
+        "bbox": [28.24, -15.45, 28.40, -15.32]
+    },
+    "Harare (Zimbabwe)": {
+        "country": "Zimbabwe", "iso3": "ZWE", "city": "Harare",
+        "lat": -17.8252, "lon": 31.0335, "region": "East Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_ZWE_1.json",
+        "bbox": [30.95, -17.90, 31.15, -17.75]
+    },
+
+    # --- CENTRAL AFRICA ---
+    "Luanda (Angola)": {
+        "country": "Angola", "iso3": "AGO", "city": "Luanda",
+        "lat": -8.8390, "lon": 13.2894, "region": "Central Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_AGO_1.json",
+        "bbox": [13.18, -8.92, 13.38, -8.78]
+    },
+    "Yaoundé / Douala (Cameroon)": {
+        "country": "Cameroon", "iso3": "CMR", "city": "Yaoundé",
+        "lat": 3.8480, "lon": 11.5021, "region": "Central Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_CMR_1.json",
+        "bbox": [11.42, 3.78, 11.58, 3.92]
+    },
+    "Bangui (Central African Rep.)": {
+        "country": "Central African Rep.", "iso3": "CAF", "city": "Bangui",
+        "lat": 4.3947, "lon": 18.5582, "region": "Central Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_CAF_1.json",
+        "bbox": [18.50, 4.34, 18.62, 4.44]
+    },
+    "N'Djamena (Chad)": {
+        "country": "Chad", "iso3": "TCD", "city": "N'Djamena",
+        "lat": 12.1348, "lon": 15.0557, "region": "Central Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_TCD_1.json",
+        "bbox": [14.98, 12.08, 15.15, 12.18]
+    },
+    "Brazzaville (Republic of Congo)": {
+        "country": "Congo", "iso3": "COG", "city": "Brazzaville",
+        "lat": -4.2634, "lon": 15.2429, "region": "Central Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_COG_1.json",
+        "bbox": [15.18, -4.32, 15.30, -4.20]
+    },
+    "Kinshasa (DR Congo)": {
+        "country": "DR Congo", "iso3": "COD", "city": "Kinshasa",
+        "lat": -4.4419, "lon": 15.2663, "region": "Central Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_COD_1.json",
+        "bbox": [15.15, -4.52, 15.40, -4.35]
+    },
+    "Malabo (Equatorial Guinea)": {
+        "country": "Equatorial Guinea", "iso3": "GNQ", "city": "Malabo",
+        "lat": 3.7504, "lon": 8.7371, "region": "Central Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_GNQ_1.json",
+        "bbox": [8.70, 3.72, 8.80, 3.78]
+    },
+    "Libreville (Gabon)": {
+        "country": "Gabon", "iso3": "GAB", "city": "Libreville",
+        "lat": 0.4162, "lon": 9.4673, "region": "Central Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_GAB_1.json",
+        "bbox": [9.40, 0.35, 9.52, 0.48]
+    },
+    "São Tomé (São Tomé & Príncipe)": {
+        "country": "São Tomé and Príncipe", "iso3": "STP", "city": "São Tomé",
+        "lat": 0.3302, "lon": 6.7273, "region": "Central Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_STP_1.json",
+        "bbox": [6.68, 0.30, 6.76, 0.36]
+    },
+
+    # --- SOUTHERN AFRICA ---
+    "Gaborone (Botswana)": {
+        "country": "Botswana", "iso3": "BWA", "city": "Gaborone",
+        "lat": -24.6580, "lon": 25.9122, "region": "Southern Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_BWA_1.json",
+        "bbox": [25.85, -24.72, 25.98, -24.60]
+    },
+    "Mbabane (Eswatini)": {
+        "country": "Eswatini", "iso3": "SWZ", "city": "Mbabane",
+        "lat": -26.3055, "lon": 31.1367, "region": "Southern Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_SWZ_1.json",
+        "bbox": [31.10, -26.35, 31.18, -26.26]
+    },
+    "Maseru (Lesotho)": {
+        "country": "Lesotho", "iso3": "LSO", "city": "Maseru",
+        "lat": -29.3151, "lon": 27.4869, "region": "Southern Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_LSO_1.json",
+        "bbox": [27.44, -29.36, 27.54, -29.28]
+    },
+    "Windhoek (Namibia)": {
+        "country": "Namibia", "iso3": "NAM", "city": "Windhoek",
+        "lat": -22.5609, "lon": 17.0658, "region": "Southern Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_NAM_1.json",
+        "bbox": [17.00, -22.62, 17.14, -22.50]
+    },
+    "Johannesburg / Pretoria (South Africa)": {
+        "country": "South Africa", "iso3": "ZAF", "city": "Johannesburg",
+        "lat": -26.2041, "lon": 28.0473, "region": "Southern Africa",
+        "gadm_url": "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_ZAF_1.json",
+        "bbox": [27.90, -26.35, 28.20, -26.05]
+    }
+}

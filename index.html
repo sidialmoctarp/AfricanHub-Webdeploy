@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AfricaHub | Urban Heat Intelligence Platform</title>
+  <meta name="description" content="Satellite-driven urban heat intelligence for 54 African nations: LST, UHI mapping, hotspot detection, AI greening plans and GeoTIFF export.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/landing.css">
+</head>
+<body>
+
+  <!-- ====================== STICKY NAVIGATION ====================== -->
+  <header class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="#home" class="brand" aria-label="AfricaHub home">
+        <span class="brand-mark"></span>
+        <span class="brand-name">Africa<b>Hub</b></span>
+      </a>
+      <nav class="nav-links" id="nav-links" aria-label="Main">
+        <a href="#home" data-spy="home">Sign in</a>
+        <a href="#impact" data-spy="impact">Impact</a>
+        <a href="#services" data-spy="services">Services</a>
+        <a href="#ai" data-spy="ai">AI &amp; ML</a>
+        <a href="#how" data-spy="how">How it works</a>
+        <a href="#contact" data-spy="contact">Contact</a>
+        <a href="app.html" class="btn btn-sm nav-open" id="nav-open" hidden>Open the app →</a>
+      </nav>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <!-- ====================== HERO + AUTHENTICATION ====================== -->
+  <section class="hero" id="home">
+    <div class="hero-bg" id="hero-bg" style="background-image:url('images/login-bg.jpg')"></div>
+    <div class="hero-heat"></div>
+    <div class="hero-glow" id="hero-glow"></div>
+
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <span class="eyebrow"><i class="pulse"></i> Urban Heat Intelligence Platform</span>
+        <h1>Satellite-driven urban heat intelligence for <span class="heat-text">54 African nations</span></h1>
+        <p class="lead">Extract Land Surface Temperature, map Urban Heat Islands, locate critical hotspots and get an AI-assisted greening strategy, all from a single analysis engine.</p>
+        <ul class="hero-points">
+          <li>Landsat · Sentinel · MODIS</li>
+          <li>μ + 2σ / μ + 1σ / P90 hotspots</li>
+          <li>GeoTIFF for ArcGIS &amp; QGIS</li>
+        </ul>
+      </div>
+
+      <!-- Glassmorphism auth card -->
+      <div class="auth-card" id="auth-card">
+        <div class="auth-tabs" role="tablist">
+          <button class="auth-tab active" role="tab" data-tab="login" aria-selected="true">Log in</button>
+          <button class="auth-tab" role="tab" data-tab="signup" aria-selected="false">Sign up</button>
+          <span class="auth-tab-ink" id="tab-ink"></span>
+        </div>
+
+        <div class="auth-panels" id="auth-panels">
+
+          <!-- LOG IN -->
+          <form class="auth-panel active" id="login-form" data-panel="login" novalidate autocomplete="on">
+            <h2>Welcome back</h2>
+            <p class="auth-sub">Sign in to open the Spatial Parameters engine.</p>
+
+            <label class="field">
+              <span>Username or email</span>
+              <input type="text" id="login-id" autocomplete="username" placeholder="sidi" required>
+            </label>
+            <label class="field">
+              <span>Password</span>
+              <div class="pw-wrap">
+                <input type="password" id="login-pw" autocomplete="current-password" placeholder="••••••••" required>
+                <button type="button" class="pw-eye" data-eye="login-pw" aria-label="Show password">👁</button>
+              </div>
+            </label>
+
+            <div class="row-between">
+              <label class="check"><input type="checkbox" id="login-remember"><span>Remember me</span></label>
+              <button type="button" class="link" id="forgot-open">Forgot password?</button>
+            </div>
+
+            <div class="form-msg" id="login-msg" role="alert" aria-live="polite"></div>
+            <button type="submit" class="btn btn-primary btn-block" id="login-btn"><span class="btn-label">Log in</span><i class="btn-spin"></i></button>
+            <p class="hint">Test account: <code>sidi</code> / <code>sidi</code> <button type="button" class="link" id="fill-demo">fill it in</button></p>
+          </form>
+
+          <!-- SIGN UP -->
+          <form class="auth-panel" id="signup-form" data-panel="signup" novalidate autocomplete="on">
+            <h2>Create your account</h2>
+            <p class="auth-sub">Free access to the thermal analysis engine.</p>
+
+            <label class="field">
+              <span>Username</span>
+              <input type="text" id="su-user" autocomplete="username" placeholder="3+ letters, numbers, . _ -">
+              <small class="field-msg" id="su-user-msg"></small>
+            </label>
+            <label class="field">
+              <span>Email</span>
+              <input type="email" id="su-email" autocomplete="email" placeholder="you@organisation.org">
+              <small class="field-msg" id="su-email-msg"></small>
+            </label>
+            <label class="field">
+              <span>Password</span>
+              <div class="pw-wrap">
+                <input type="password" id="su-pw" autocomplete="new-password" placeholder="Min. 8 characters">
+                <button type="button" class="pw-eye" data-eye="su-pw" aria-label="Show password">👁</button>
+              </div>
+              <div class="meter" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+              <small class="field-msg" id="su-pw-msg">Use 8+ characters with upper/lower case, a number and a symbol.</small>
+            </label>
+            <label class="field">
+              <span>Confirm password</span>
+              <div class="pw-wrap">
+                <input type="password" id="su-pw2" autocomplete="new-password" placeholder="Repeat password">
+                <button type="button" class="pw-eye" data-eye="su-pw2" aria-label="Show password">👁</button>
+              </div>
+              <small class="field-msg" id="su-pw2-msg"></small>
+            </label>
+
+            <div class="form-msg" id="signup-msg" role="alert" aria-live="polite"></div>
+            <button type="submit" class="btn btn-primary btn-block" id="signup-btn" disabled><span class="btn-label">Create account</span><i class="btn-spin"></i></button>
+          </form>
+
+          <!-- FORGOT PASSWORD -->
+          <form class="auth-panel" id="forgot-form" data-panel="forgot" novalidate>
+            <h2>Reset password</h2>
+            <p class="auth-sub">Enter your account email and we'll send reset instructions.</p>
+            <label class="field">
+              <span>Email</span>
+              <input type="email" id="forgot-email" placeholder="you@organisation.org" autocomplete="email">
+            </label>
+            <div class="form-msg" id="forgot-msg" role="alert" aria-live="polite"></div>
+            <button type="submit" class="btn btn-primary btn-block"><span class="btn-label">Send reset link</span></button>
+            <button type="button" class="link center" id="forgot-back">← Back to log in</button>
+            <p class="hint">Demo build: no email server is connected, so no message is actually sent.</p>
+          </form>
+
+        </div>
+      </div>
+    </div>
+
+    <a href="#impact" class="scroll-cue" aria-label="Scroll to content"><span></span></a>
+  </section>
+
+  <!-- ====================== KEY FIGURES ====================== -->
+  <section class="stats" id="impact">
+    <div class="wrap">
+      <div class="stat-grid">
+        <div class="stat reveal">
+          <div class="stat-num"><span data-count="54">0</span></div>
+          <div class="stat-label">African countries covered</div>
+        </div>
+        <div class="stat reveal" style="--d:.1s">
+          <div class="stat-num"><span data-count="3">0</span></div>
+          <div class="stat-label">Satellite constellations<br><small>Landsat · Sentinel · MODIS</small></div>
+        </div>
+        <div class="stat reveal" style="--d:.2s">
+          <div class="stat-num"><span data-count="3">0</span></div>
+          <div class="stat-label">Hotspot detection methods<br><small>μ+2σ · μ+1σ · top 10 %</small></div>
+        </div>
+        <div class="stat reveal" style="--d:.3s">
+          <div class="stat-num"><span data-count="2">0</span></div>
+          <div class="stat-label">GIS platforms supported<br><small>GeoTIFF for ArcGIS &amp; QGIS</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== SERVICES ====================== -->
+  <section class="section" id="services">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">What the engine delivers</span>
+        <h2>From raw thermal pixels to a <span class="heat-text">cooling strategy</span></h2>
+        <p>Eight integrated services, one workflow. Select a card to see what it does and what you get.</p>
+      </div>
+      <div class="cards" id="cards"><!-- cards injected by js/landing.js from the SERVICES list --></div>
+    </div>
+  </section>
+
+  <!-- Service detail dialog -->
+  <div class="modal" id="svc-modal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="svc-title">
+      <button class="modal-close" id="svc-close" aria-label="Close">✕</button>
+      <div class="modal-img" id="svc-img"></div>
+      <div class="modal-body">
+        <span class="chip" id="svc-chip"></span>
+        <h3 id="svc-title"></h3>
+        <p id="svc-desc"></p>
+        <ul id="svc-list"></ul>
+        <a href="#home" class="btn btn-primary" id="svc-cta">Try it in the app</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================== AI / ML HEAT MODELLING ====================== -->
+  <section class="section" id="ai">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">AI &amp; machine learning</span>
+        <h2>Predict the heat. <span class="heat-text">Test the cure.</span></h2>
+        <p>Beyond mapping: model what drives urban heating, classify heat stress and simulate cooling interventions before you build them.</p>
+      </div>
+      <div class="ai-grid">
+        <article class="ai-card reveal">
+          <h3>Heat stress zones</h3>
+          <p>Predicted land surface temperature on a 100 m grid, classified into 5 heat-stress levels and shown on an interactive map.</p>
+          <div class="ai-ramp"><i style="background:#2563eb"></i><i style="background:#22d3ee"></i><i style="background:#facc15"></i><i style="background:#f97316"></i><i style="background:#ef4444"></i></div>
+        </article>
+        <article class="ai-card reveal" style="--d:.08s">
+          <h3>Driver explainability</h3>
+          <p>See which factors push temperature up or down: NDVI, NDBI, air temperature, elevation, slope and population density.</p>
+        </article>
+        <article class="ai-card reveal" style="--d:.16s">
+          <h3>Cooling scenario simulator</h3>
+          <p>Add tree canopy, cool roofs or shade, then read the temperature drop and people relieved. An optimiser finds the best mix for your budget.</p>
+        </article>
+        <article class="ai-card reveal" style="--d:.24s">
+          <h3>Open data foundation</h3>
+          <p>Landsat 8/9 LST, Sentinel-2 indices, ERA5-Land weather, SRTM terrain and WorldPop population.</p>
+        </article>
+      </div>
+      <div class="ai-chips reveal">
+        <span>Random Forest Regressor</span><span>100 m grid</span><span>LST target</span><span>6 predictors</span><span>CSV export</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== HOW IT WORKS ====================== -->
+  <section class="section section-dark" id="how">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Mirrors the app workflow</span>
+        <h2>Five steps from <span class="heat-text">area</span> to <span class="heat-text">answer</span></h2>
+        <p>The same five stages you will find in the Spatial Parameters panel once you sign in.</p>
+      </div>
+
+      <div class="timeline reveal" id="timeline">
+        <ol class="steps" id="steps"></ol>
+        <div class="step-panel" id="step-panel" aria-live="polite">
+          <div class="step-progress"><i id="step-bar"></i></div>
+          <div class="step-panel-body">
+            <span class="step-big" id="sp-num">1</span>
+            <h3 id="sp-title"></h3>
+            <p id="sp-desc"></p>
+            <ul id="sp-list"></ul>
+            <div class="step-nav">
+              <button class="btn btn-ghost btn-sm" id="sp-prev">← Previous</button>
+              <button class="btn btn-ghost btn-sm" id="sp-next">Next →</button>
+              <span class="step-auto" id="sp-auto">Auto-play on</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== CALL TO ACTION ====================== -->
+  <section class="cta">
+    <div class="cta-bg" style="background-image:url('images/city-lagos.jpg')"></div>
+    <div class="cta-shade"></div>
+    <div class="wrap cta-inner reveal">
+      <h2>Know where your city burns, and where a tree matters most.</h2>
+      <a href="#home" class="btn btn-primary btn-lg" id="cta-signin">Sign in to start analysing</a>
+    </div>
+  </section>
+
+  <!-- ====================== FOOTER ====================== -->
+  <footer class="footer" id="contact">
+    <div class="wrap footer-grid">
+      <div>
+        <a href="#home" class="brand"><span class="brand-mark"></span><span class="brand-name">Africa<b>Hub</b></span></a>
+        <p class="footer-about">Urban heat intelligence for African cities, aligned with UN SDG 3 (Good Health &amp; Well-being) and SDG 13 (Climate Action).</p>
+      </div>
+      <div>
+        <h4>Platform</h4>
+        <a href="#services">Services</a>
+        <a href="#how">How it works</a>
+        <a href="#home">Sign in</a>
+      </div>
+      <div>
+        <h4>Data</h4>
+        <a href="https://www.usgs.gov/landsat-missions" target="_blank" rel="noopener">Landsat (USGS)</a>
+        <a href="https://sentinel.esa.int/" target="_blank" rel="noopener">Sentinel (ESA)</a>
+        <a href="https://modis.gsfc.nasa.gov/" target="_blank" rel="noopener">MODIS (NASA)</a>
+        <a href="https://gadm.org/" target="_blank" rel="noopener">GADM boundaries</a>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <a href="mailto:sidialmoctarp@gmail.com">sidialmoctarp@gmail.com</a>
+        <a href="images/CREDITS.md" target="_blank" rel="noopener">Image credits</a>
+      </div>
+    </div>
+    <div class="wrap footer-base">
+      <span>© <span id="year"></span> AfricaHub. All rights reserved.</span>
+      <span>Built on open satellite data.</span>
+    </div>
+  </footer>
+
+  <!-- Full-screen transition played after a successful login -->
+  <div class="enter" id="enter" aria-hidden="true">
+    <div class="enter-core">
+      <div class="enter-ring"></div>
+      <div class="enter-title">Initialising thermal engine</div>
+      <div class="enter-sub" id="enter-sub">Authenticating…</div>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/landing.js"></script>
+</body>
+</html>

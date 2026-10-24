@@ -1,0 +1,6 @@
+# Static site: no build step, publish the repository root.
+[build]
+  publish = "."
+
+[functions]
+  directory = "netlify/functions"

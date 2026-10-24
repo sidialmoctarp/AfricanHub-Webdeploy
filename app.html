@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UHI Analytics Pro | Satellite Thermal Intelligence</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+
+  <!-- Auth guard: only signed-in users may open the app (js/auth.js is loaded here, before first paint) -->
+  <script src="js/auth.js"></script>
+  <script>if (!UHIAuth.requireSession()) { document.documentElement.style.visibility = 'hidden'; }</script>
+
+  <!-- Apply saved theme before first paint -->
+  <script>
+    try { if (localStorage.getItem('uhi-theme') !== 'light') document.documentElement.classList.add('dark-theme'); } catch (e) {}
+  </script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/session.css">
+  <link rel="stylesheet" href="css/africahub-theme.css">
+  <link rel="stylesheet" href="css/prediction.css">
+</head>
+<body>
+
+  <div class="app-wrapper">
+
+    <!-- Left Configuration Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand-badge">
+          <div class="brand-icon">🌡️</div>
+          <div class="brand-title">
+            UHI Analytics Pro
+            <span class="brand-version">v2.4</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-body">
+        <div class="sidebar-intro">
+          <h2>Spatial Parameters</h2>
+          <p>Automated Land Surface Temperature (LST) and Urban Heat Island (UHI) extraction engine.</p>
+        </div>
+
+        <!-- Step 1: AOI Definition -->
+        <div class="form-group">
+          <div class="form-group-header">
+            <span class="form-group-title">
+              <span class="step-badge">1</span> Area of Interest (54 African Nations)
+            </span>
+          </div>
+          <div class="radio-group" style="margin-bottom: 0.65rem;">
+            <label class="radio-label">
+              <input type="radio" name="aoi_mode" value="africa" checked> 🌍 54 African Cities
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="aoi_mode" value="draw"> Draw
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="aoi_mode" value="upload"> Upload
+            </label>
+          </div>
+
+          <!-- African Cities (GADM 54) Dropdown -->
+          <div id="africa-city-container" style="margin-bottom: 0.6rem;">
+            <small class="field-label">Select African Capital / Metropolis (GADM):</small>
+            <select id="african-city-select" style="margin-top: 3px;">
+              <optgroup label="North Africa">
+                <option value="Algiers (Algeria)" data-iso="DZA">Algiers (Algeria) [DZA]</option>
+                <option value="Cairo (Egypt)" data-iso="EGY">Cairo (Egypt) [EGY]</option>
+                <option value="Tripoli (Libya)" data-iso="LBY">Tripoli (Libya) [LBY]</option>
+                <option value="Rabat / Casablanca (Morocco)" data-iso="MAR" selected>Rabat / Casablanca (Morocco) [MAR]</option>
+                <option value="Tunis (Tunisia)" data-iso="TUN">Tunis (Tunisia) [TUN]</option>
+                <option value="Khartoum (Sudan)" data-iso="SDN">Khartoum (Sudan) [SDN]</option>
+              </optgroup>
+              <optgroup label="West Africa">
+                <option value="Porto-Novo / Cotonou (Benin)" data-iso="BEN">Porto-Novo / Cotonou (Benin) [BEN]</option>
+                <option value="Ouagadougou (Burkina Faso)" data-iso="BFA">Ouagadougou (Burkina Faso) [BFA]</option>
+                <option value="Praia (Cabo Verde)" data-iso="CPV">Praia (Cabo Verde) [CPV]</option>
+                <option value="Abidjan (Ivory Coast)" data-iso="CIV">Abidjan (Ivory Coast) [CIV]</option>
+                <option value="Banjul (The Gambia)" data-iso="GMB">Banjul (The Gambia) [GMB]</option>
+                <option value="Accra (Ghana)" data-iso="GHA">Accra (Ghana) [GHA]</option>
+                <option value="Conakry (Guinea)" data-iso="GIN">Conakry (Guinea) [GIN]</option>
+                <option value="Bissau (Guinea-Bissau)" data-iso="GNB">Bissau (Guinea-Bissau) [GNB]</option>
+                <option value="Monrovia (Liberia)" data-iso="LBR">Monrovia (Liberia) [LBR]</option>
+                <option value="Bamako (Mali)" data-iso="MLI">Bamako (Mali) [MLI]</option>
+                <option value="Nouakchott (Mauritania)" data-iso="MRT">Nouakchott (Mauritania) [MRT]</option>
+                <option value="Niamey (Niger)" data-iso="NER">Niamey (Niger) [NER]</option>
+                <option value="Abuja / Lagos (Nigeria)" data-iso="NGA">Abuja / Lagos (Nigeria) [NGA]</option>
+                <option value="Dakar (Senegal)" data-iso="SEN">Dakar (Senegal) [SEN]</option>
+                <option value="Freetown (Sierra Leone)" data-iso="SLE">Freetown (Sierra Leone) [SLE]</option>
+                <option value="Lomé (Togo)" data-iso="TGO">Lomé (Togo) [TGO]</option>
+              </optgroup>
+              <optgroup label="East Africa">
+                <option value="Bujumbura (Burundi)" data-iso="BDI">Bujumbura (Burundi) [BDI]</option>
+                <option value="Moroni (Comoros)" data-iso="COM">Moroni (Comoros) [COM]</option>
+                <option value="Djibouti City (Djibouti)" data-iso="DJI">Djibouti City (Djibouti) [DJI]</option>
+                <option value="Asmara (Eritrea)" data-iso="ERI">Asmara (Eritrea) [ERI]</option>
+                <option value="Addis Ababa (Ethiopia)" data-iso="ETH">Addis Ababa (Ethiopia) [ETH]</option>
+                <option value="Nairobi (Kenya)" data-iso="KEN">Nairobi (Kenya) [KEN]</option>
+                <option value="Antananarivo (Madagascar)" data-iso="MDG">Antananarivo (Madagascar) [MDG]</option>
+                <option value="Lilongwe (Malawi)" data-iso="MWI">Lilongwe (Malawi) [MWI]</option>
+                <option value="Port Louis (Mauritius)" data-iso="MUS">Port Louis (Mauritius) [MUS]</option>
+                <option value="Maputo (Mozambique)" data-iso="MOZ">Maputo (Mozambique) [MOZ]</option>
+                <option value="Kigali (Rwanda)" data-iso="RWA">Kigali (Rwanda) [RWA]</option>
+                <option value="Victoria (Seychelles)" data-iso="SYC">Victoria (Seychelles) [SYC]</option>
+                <option value="Mogadishu (Somalia)" data-iso="SOM">Mogadishu (Somalia) [SOM]</option>
+                <option value="Juba (South Sudan)" data-iso="SSD">Juba (South Sudan) [SSD]</option>
+                <option value="Dar es Salaam (Tanzania)" data-iso="TZA">Dar es Salaam (Tanzania) [TZA]</option>
+                <option value="Kampala (Uganda)" data-iso="UGA">Kampala (Uganda) [UGA]</option>
+                <option value="Lusaka (Zambia)" data-iso="ZMB">Lusaka (Zambia) [ZMB]</option>
+                <option value="Harare (Zimbabwe)" data-iso="ZWE">Harare (Zimbabwe) [ZWE]</option>
+              </optgroup>
+              <optgroup label="Central Africa">
+                <option value="Luanda (Angola)" data-iso="AGO">Luanda (Angola) [AGO]</option>
+                <option value="Yaoundé / Douala (Cameroon)" data-iso="CMR">Yaoundé / Douala (Cameroon) [CMR]</option>
+                <option value="Bangui (Central African Rep.)" data-iso="CAF">Bangui (Central African Rep.) [CAF]</option>
+                <option value="N'Djamena (Chad)" data-iso="TCD">N'Djamena (Chad) [TCD]</option>
+                <option value="Brazzaville (Republic of Congo)" data-iso="COG">Brazzaville (Republic of Congo) [COG]</option>
+                <option value="Kinshasa (DR Congo)" data-iso="COD">Kinshasa (DR Congo) [COD]</option>
+                <option value="Malabo (Equatorial Guinea)" data-iso="GNQ">Malabo (Equatorial Guinea) [GNQ]</option>
+                <option value="Libreville (Gabon)" data-iso="GAB">Libreville (Gabon) [GAB]</option>
+                <option value="São Tomé (São Tomé & Príncipe)" data-iso="STP">São Tomé (São Tomé & Príncipe) [STP]</option>
+              </optgroup>
+              <optgroup label="Southern Africa">
+                <option value="Gaborone (Botswana)" data-iso="BWA">Gaborone (Botswana) [BWA]</option>
+                <option value="Mbabane (Eswatini)" data-iso="SWZ">Mbabane (Eswatini) [SWZ]</option>
+                <option value="Maseru (Lesotho)" data-iso="LSO">Maseru (Lesotho) [LSO]</option>
+                <option value="Windhoek (Namibia)" data-iso="NAM">Windhoek (Namibia) [NAM]</option>
+                <option value="Johannesburg / Pretoria (South Africa)" data-iso="ZAF">Johannesburg / Pretoria (South Africa) [ZAF]</option>
+              </optgroup>
+            </select>
+            <div class="field-note">
+              Boundary data sourced from <a href="https://gadm.org/data.html" target="_blank" rel="noopener">GADM Database</a>
+            </div>
+          </div>
+
+          <input type="file" id="geojson-upload" class="file-input" accept=".zip,.geojson,.json">
+          <p id="aoi-area" class="field-mono">
+            Area: Resolving GADM boundary...
+          </p>
+        </div>
+
+        <!-- Step 2: Scene Search & Date Filtering -->
+        <div class="form-group">
+          <div class="form-group-header">
+            <span class="form-group-title">
+              <span class="step-badge">2</span> Satellite Acquisition & Dates
+            </span>
+          </div>
+          <div style="margin-bottom: 0.5rem;">
+            <small class="field-label">Dataset Constellation</small>
+            <select id="satellite-select">
+              <option value="Landsat 8/9">Landsat 8/9 OLI-2/TIRS (30m)</option>
+              <option value="Sentinel-2">Sentinel-2 MSI (10m/20m)</option>
+              <option value="MODIS">MODIS Terra/Aqua (1000m)</option>
+            </select>
+          </div>
+
+          <div style="margin-bottom: 0.5rem;">
+            <small class="field-label">Seasonal Date Preset</small>
+            <select id="season-preset-select" onchange="applySeasonPreset(this.value)">
+              <option value="sahel">Sahel & Tropical Dry Season (Nov - Mar)</option>
+              <option value="med" selected>Mediterranean & North African Summer (Jun - Aug)</option>
+              <option value="south">Southern African Summer (Dec - Feb)</option>
+              <option value="annual">Full Annual Climatology (Jan - Dec)</option>
+            </select>
+          </div>
+
+          <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0.5rem; margin-bottom: 0.5rem;">
+            <div>
+              <small class="field-label">Start Date</small>
+              <input type="date" id="start-date-input" value="2025-06-01">
+            </div>
+            <div>
+              <small class="field-label">End Date</small>
+              <input type="date" id="end-date-input" value="2025-08-31">
+            </div>
+          </div>
+          <div style="margin-bottom: 0.75rem;">
+            <small class="field-label">Max Cloud Mask (<span id="cloud-val" class="field-mono">20</span>%)</small>
+            <input type="range" id="cloud-slider" min="0" max="100" value="20" oninput="document.getElementById('cloud-val').innerText=this.value">
+          </div>
+          <button id="search-scenes-btn" class="btn btn-secondary" style="width: 100%;">
+            🔍 Query STAC Archive
+          </button>
+        </div>
+
+        <!-- Step 3: Scene Selection -->
+        <div class="form-group">
+          <div class="form-group-header">
+            <span class="form-group-title">
+              <span class="step-badge">3</span> Scene Calibrator
+            </span>
+          </div>
+          <select id="scene-select" disabled>
+            <option value="">-- Query scenes above --</option>
+          </select>
+        </div>
+
+        <!-- Step 4: Algorithm & Reference -->
+        <div class="form-group">
+          <div class="form-group-header">
+            <span class="form-group-title">
+              <span class="step-badge">4</span> Analysis Parameters
+            </span>
+          </div>
+          <div style="margin-bottom: 0.5rem;">
+            <small class="field-label">Rural Baseline Derivation</small>
+            <select>
+              <option>Auto (Vegetated Buffer NDVI > 0.4)</option>
+              <option>Dynamic Radial Ring (5-10km)</option>
+              <option>Manual Agricultural Polygon</option>
+            </select>
+          </div>
+          <div>
+            <small class="field-label">Thermal Anomaly Threshold</small>
+            <select>
+              <option>μ + 2σ (Critical Hotspots)</option>
+              <option>μ + 1σ (Moderate Hotspots)</option>
+              <option>Top 10th Percentile</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Step 5: Run Pipeline -->
+        <div style="margin-top: auto; padding-top: 0.75rem;">
+          <button id="run-sim-btn" class="btn btn-primary btn-glow">
+            🚀 Run Simulation
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main-wrapper">
+      <!-- Topbar: context, telemetry, theme -->
+      <header class="top-hud-bar">
+        <div class="top-hud-left">
+          <span class="topbar-subtitle">Satellite Thermal Intelligence · UN SDG 3 &amp; 13</span>
+          <div class="telemetry-pills">
+            <div class="telemetry-pill live">
+              <span class="telemetry-dot"></span>
+              <span>System online</span>
+            </div>
+            <div class="telemetry-pill">
+              <span>🛰️ Landsat-9 OLI-2 / TIRS (30 m)</span>
+            </div>
+            <div class="telemetry-pill" id="top-weather-badge">
+              <span>🌤️ Weather: Standby</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="top-hud-right">
+          <button class="btn btn-secondary btn-sm" onclick="resetAOI()" title="Clear active AOI and results">
+            🔄 Reset AOI
+          </button>
+          <span class="user-chip" title="Signed in"><span class="user-chip-dot"></span><span id="session-user">user</span></span>
+          <button id="logout-btn" class="btn btn-secondary btn-sm" onclick="UHIAuth.logout()" title="Sign out and return to the login page">
+            ⎋ Log out
+          </button>
+          <button id="theme-toggle" class="icon-btn" title="Toggle light / dark theme" aria-label="Toggle theme">🌙</button>
+        </div>
+      </header>
+
+      <!-- Main GIS Map Viewport -->
+      <main class="main-content">
+        <!-- Interactive Map Container -->
+        <div id="map"></div>
+
+        <!-- Bottom Cursor Coordinate HUD -->
+        <div id="map-coord-hud" class="map-coord-hud">
+          LAT: <span>31.6295°</span> | LON: <span>-7.9811°</span> | ZOOM: <span>12</span>
+        </div>
+
+        <!-- Floating Button to Re-Open Results Window -->
+        <button id="floating-results-btn" class="floating-results-btn">
+          📊 View Statistical Results
+        </button>
+
+        <!-- In-Dashboard "Statistical Analysis Results" Window -->
+        <div id="results-window" class="results-window">
+          
+          <!-- Window Header Bar -->
+          <div class="results-window-header">
+            <div class="results-title-group">
+              <h2>📊 Statistical Analysis Results</h2>
+              <span id="scene-info-text" class="results-subtitle">Scene: 2025-08-14 • Area: Standby</span>
+            </div>
+            
+            <div class="results-controls">
+              <button id="minimize-results-window" class="window-action-btn" title="Minimize Window">🗕</button>
+              <button id="maximize-results-window" class="window-action-btn" title="Toggle Maximize">🗖</button>
+              <button id="close-results-window" class="window-action-btn close-btn" title="Close Window (Keep Map & Contour)">✖</button>
+            </div>
+          </div>
+
+          <!-- Quick Actions & Export Toolbar -->
+          <div class="results-toolbar">
+            <div class="results-toolbar-group">
+              <span class="toolbar-label">Export Deliverables:</span>
+              <button onclick="exportCsv()" class="btn btn-secondary btn-sm">
+                ⬇️ CSV Data
+              </button>
+              <button onclick="exportDocx()" class="btn btn-primary btn-sm">
+                📄 DOCX Report
+              </button>
+              <button onclick="exportGeotiff()" class="btn btn-cyan btn-sm">
+                🗺️ Download GeoTIFF
+              </button>
+            </div>
+          </div>
+
+          <!-- Window Scrollable Body -->
+          <div class="results-window-body">
+            
+            <!-- KPI Scorecard Cards -->
+            <div class="kpi-grid">
+              <div class="kpi-card">
+                <div class="kpi-label">Mean LST</div>
+                <div class="kpi-value" id="kpi-mean-lst">38.4 °C</div>
+                <div class="kpi-badge">Spatial Average</div>
+              </div>
+              <div class="kpi-card hot">
+                <div class="kpi-label">Peak LST</div>
+                <div class="kpi-value hot" id="kpi-max-lst">47.2 °C</div>
+                <div class="kpi-badge">Thermal Peak</div>
+              </div>
+              <div class="kpi-card anomaly">
+                <div class="kpi-label">UHI Intensity</div>
+                <div class="kpi-value anomaly" id="kpi-uhi-intensity">+6.1 °C</div>
+                <div class="kpi-badge">vs. Rural Baseline</div>
+              </div>
+              <div class="kpi-card">
+                <div class="kpi-label">Hotspot Area</div>
+                <div class="kpi-value" id="kpi-hotspot-area">18.3 km²</div>
+                <div class="kpi-badge">Critically Affected</div>
+              </div>
+            </div>
+
+            <!-- Charts & Histograms -->
+            <div class="charts-grid">
+              <div class="chart-card">
+                <canvas id="lstHistogram"></canvas>
+              </div>
+              <div class="chart-card">
+                <canvas id="uhiHistogram"></canvas>
+              </div>
+              <div class="chart-card">
+                <canvas id="ndbiHistogram"></canvas>
+              </div>
+              <div class="chart-card">
+                <canvas id="ndviHistogram"></canvas>
+              </div>
+              <div class="chart-card full-width">
+                <canvas id="urbanVsRural"></canvas>
+              </div>
+            </div>
+
+            <!-- Hotspot Inventory Table -->
+            <div class="data-table-card">
+              <h3>
+                <span>Hotspot Cluster Inventory (μ + 2σ)</span>
+                <small>Click 'Locate' to inspect on map</small>
+              </h3>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Cluster ID</th>
+                    <th>Area (km²)</th>
+                    <th>Peak Temp</th>
+                    <th>Centroid Coordinates</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="hotspot-table-body">
+                  <!-- Populated dynamically by results.js -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- AI Heat Prediction & Cooling Scenarios (js/predict.js) -->
+            <div class="pred-card" id="pred-card">
+              <div class="pred-head">
+                <span class="pred-icon">🧠</span>
+                <div class="pred-title">
+                  <h3>AI Heat Prediction &amp; Cooling Scenarios</h3>
+                  <p>Predict land surface temperature, rank the drivers of urban heating and test cooling interventions.</p>
+                </div>
+                <span class="pred-badge" id="pred-badge">Awaiting analysis</span>
+              </div>
+
+              <div id="pred-empty" class="pred-empty">Run the simulation to train the model on the selected area and unlock zones, drivers and scenarios.</div>
+
+              <div id="pred-body">
+                <div class="pred-kpis">
+                  <div><span>Predicted mean LST</span><b id="pr-k-mean">-</b></div>
+                  <div><span>Hold-out R²</span><b id="pr-k-r2">-</b></div>
+                  <div><span>RMSE</span><b id="pr-k-rmse">-</b></div>
+                  <div><span>Grid cells (100 m)</span><b id="pr-k-cells">-</b></div>
+                </div>
+
+                <div class="pred-toolbar">
+                  <label class="pred-maplabel">Map overlay
+                    <select id="pr-map-mode">
+                      <option value="off">Hidden</option>
+                      <option value="zones">Heat stress zones (5 classes)</option>
+                      <option value="continuous">Continuous LST prediction</option>
+                      <option value="scenario">Zones with interventions</option>
+                    </select>
+                  </label>
+                  <button class="btn btn-secondary btn-sm" id="pr-export">⬇️ Export predictions (CSV)</button>
+                </div>
+
+                <div class="pred-tabs" role="tablist">
+                  <button class="pred-tab active" data-ptab="zones">Heat stress zones</button>
+                  <button class="pred-tab" data-ptab="drivers">Drivers</button>
+                  <button class="pred-tab" data-ptab="scenario">Cooling scenarios</button>
+                  <button class="pred-tab" data-ptab="model">Model &amp; data</button>
+                </div>
+
+                <!-- Zones -->
+                <div class="pred-pane active" data-ppane="zones">
+                  <div id="pr-zones" class="zone-list"></div>
+                  <p class="pred-note" id="pr-zone-note"></p>
+                </div>
+
+                <!-- Drivers -->
+                <div class="pred-pane" data-ppane="drivers">
+                  <div class="pred-chart"><canvas id="prDriversChart"></canvas></div>
+                  <ul class="pred-list" id="pr-driver-list"></ul>
+                </div>
+
+                <!-- Scenario simulator -->
+                <div class="pred-pane" data-ppane="scenario">
+                  <div class="scenario-grid">
+                    <div class="scenario-controls">
+                      <label>Tree canopy increase <b id="pr-v-canopy">0 %</b>
+                        <input type="range" id="pr-s-canopy" min="0" max="40" value="0"></label>
+                      <label>Cool roofs &amp; reflective surfaces <b id="pr-v-roof">0 %</b>
+                        <input type="range" id="pr-s-roof" min="0" max="60" value="0"></label>
+                      <label>Shade, water &amp; ventilation cooling <b id="pr-v-micro">0.0 °C</b>
+                        <input type="range" id="pr-s-micro" min="0" max="20" value="0"></label>
+                      <label>Apply to
+                        <select id="pr-s-target">
+                          <option value="hot">Heat-stressed zones only (High + Extreme)</option>
+                          <option value="all">Whole area</option>
+                        </select></label>
+                      <label>Budget index <b id="pr-v-budget">60</b>
+                        <input type="range" id="pr-s-budget" min="10" max="100" value="60"></label>
+                      <div class="scenario-actions">
+                        <button class="btn btn-primary btn-sm" id="pr-optimise">✨ Optimise within budget</button>
+                        <button class="btn btn-secondary btn-sm" id="pr-reset">Reset</button>
+                      </div>
+                    </div>
+                    <div class="scenario-results">
+                      <div class="scenario-kpi big"><span>Mean LST change</span><b id="pr-r-delta">-</b><small id="pr-r-mean"></small></div>
+                      <div class="scenario-kpi"><span>Heat-stressed cells</span><b id="pr-r-hot">-</b></div>
+                      <div class="scenario-kpi"><span>People in heat-stressed zones (indicative)</span><b id="pr-r-pop">-</b></div>
+                      <div class="scenario-kpi"><span>Cost index / budget</span><b id="pr-r-cost">-</b></div>
+                    </div>
+                  </div>
+                  <div class="pred-chart"><canvas id="prScenarioChart"></canvas></div>
+                </div>
+
+                <!-- Model & data -->
+                <div class="pred-pane" data-ppane="model">
+                  <table class="pred-table" id="pr-model-table"></table>
+                  <table class="pred-table sources">
+                    <thead><tr><th>Dataset</th><th>Source</th><th>Features</th></tr></thead>
+                    <tbody>
+                      <tr><td>Land Surface Temperature</td><td>Landsat 8/9 C2 L2</td><td>LST (°C)</td></tr>
+                      <tr><td>Spectral indices</td><td>Sentinel-2</td><td>NDVI, NDBI, NDWI</td></tr>
+                      <tr><td>Meteorological</td><td>ERA5-Land</td><td>Air temperature, wind speed</td></tr>
+                      <tr><td>Terrain</td><td>SRTM</td><td>Elevation, slope</td></tr>
+                      <tr><td>Population</td><td>WorldPop</td><td>Population density</td></tr>
+                    </tbody>
+                  </table>
+                  <p class="pred-note">Transparency: in this front-end the model is a ridge-regression surrogate trained in your browser on a synthetic feature grid aligned with the analysis' mean LST. Metrics describe that surrogate, not the production Random Forest. Connect the Python pipeline to replace the synthetic grid with real data.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- AI Tree Recommendations Section -->
+            <div class="ai-tree-card">
+              <div class="ai-tree-header">
+                <span style="font-size: 1.5rem;">🌲</span>
+                <div>
+                  <h3>AI Tree Greening Recommendations</h3>
+                  <p>
+                    Tailored species cooling intervention plan for <span id="ai-area-name" class="accent">Selected Region</span>.
+                  </p>
+                </div>
+              </div>
+              
+              <label class="tree-region">
+                <span>Region profile</span>
+                <select id="tree-region-select"></select>
+              </label>
+              <p class="tree-region-note" id="tree-region-note"></p>
+
+              <button class="btn-ai-tree" id="btn-open-trees">
+                🌿 Load Native Tree Species & Cooling Plan
+              </button>
+
+              <div class="tree-results-section" id="tree-results-container">
+                <table style="margin-top: 1rem;">
+                  <thead>
+                    <tr>
+                      <th>Botanical Name</th>
+                      <th>Common Name</th>
+                      <th>Cooling Capacity</th>
+                      <th>Drought Tolerance</th>
+                      <th>Growth Velocity</th>
+                      <th>Best Placement</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tree-table-body">
+                    <!-- Populated dynamically -->
+                  </tbody>
+                </table>
+
+                <div class="strategy-box">
+                  <h4>Urban Forestry Strategy:</h4>
+                  <div id="tree-strategy-text" class="tree-strategy"></div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Telemetry Pipeline Processing HUD Modal -->
+  <div id="loading-overlay" class="loading-overlay">
+    <div class="pipeline-hud-card">
+      <div class="pipeline-spinner"></div>
+      <h3>Executing Geospatial Pipeline</h3>
+      <div class="progress-track">
+        <div id="progress-fill" class="progress-fill"></div>
+      </div>
+      <div id="pipeline-step-text" class="pipeline-step-text">Initialising Cloud-Optimized GeoTIFF Streaming...</div>
+    </div>
+  </div>
+
+  <!-- DOCX Preview Modal -->
+  <div id="docx-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Intelligence Report Preview</h3>
+        <button class="window-action-btn" onclick="closeDocxModal()">✖</button>
+      </div>
+      <div class="modal-body" id="docx-preview-content">
+        <!-- Content populated by export.js -->
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeDocxModal()">Close Preview</button>
+        <button class="btn btn-primary" onclick="downloadDocx()">⬇️ Download Word (.docx)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dependencies -->
+  <!-- Leaflet JS & Draw -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+  <!-- Turf.js for spatial vector calculations -->
+  <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+  <!-- shpjs for Shapefile zip parsing -->
+  <script src="https://unpkg.com/shpjs@latest/dist/shp.js"></script>
+  <!-- Chart.js for analytical charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- SheetJS for Excel / CSV export -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <!-- docx.js for Word report compilation -->
+  <script src="https://unpkg.com/docx@8.5.0/build/index.js"></script>
+  <!-- FileSaver.js for file saving -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <!-- html2canvas for raster snapshot -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <!-- Application Logic Modules -->
+  <script src="js/trees.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/results.js"></script>
+  <script src="js/export.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/predict.js"></script>
+  <script>document.getElementById('session-user').textContent = (UHIAuth.getSession() || {}).name || '';</script>
+</body>
+</html>

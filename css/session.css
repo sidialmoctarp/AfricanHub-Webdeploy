@@ -1,0 +1,19 @@
+/* Session widgets added to the app top bar (user chip + log-out button) */
+.user-chip {
+  display: inline-flex; align-items: center; gap: 0.45rem;
+  padding: 0.3rem 0.75rem; border-radius: 999px;
+  font-size: 0.78rem; font-weight: 600; color: var(--text-main, inherit);
+  background: rgba(37, 99, 235, 0.08); border: 1px solid rgba(37, 99, 235, 0.25);
+}
+.user-chip-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 6px #22c55e; }
+#logout-btn:hover { border-color: #ef4444; color: #ef4444; }
+@media (max-width: 720px) { .user-chip { display: none; } }
+
+/* Keep the top bar from overflowing now that the user chip + log-out button live on the right */
+.top-hud-left { flex: 1 1 0; overflow: hidden; }
+.top-hud-right { flex: 0 0 auto; }
+.telemetry-pills { min-width: 0; overflow: hidden; }
+.telemetry-pill { flex-shrink: 0; }
+@media (max-width: 1700px) { #top-weather-badge { display: none; } }
+@media (max-width: 1500px) { .topbar-subtitle { display: none; } }
+@media (max-width: 1250px) { .telemetry-pill:not(.live) { display: none; } }
